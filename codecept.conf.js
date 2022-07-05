@@ -1,28 +1,26 @@
+const { setHeadlessWhen, setCommonPlugins } = require('@codeceptjs/configure');
+
+// turn on headless mode when running with HEADLESS=true environment variable
+// export HEADLESS=true && npx codeceptjs run
+setHeadlessWhen(process.env.HEADLESS);
+
+// enable all common plugins https://github.com/codeceptjs/configure#setcommonplugins
+setCommonPlugins();
+
 exports.config = {
-  tests: './*_test.js',
+  tests: './tests/*_test.js',
   output: './output',
   helpers: {
-    Puppeteer: {
+    Playwright: {
       url: 'http://localhost',
       show: true,
-      windowSize: '1900x1048',
-      chrome: {
-        defaultViewport: {
-          width: 1920,
-          height: 1080
-        },
-        args: [
-          '--disable-gpu',
-          '--window-size=1900,1200',
-          '--disable-dev-shm-usage',
-          '--disable-setuid-sandbox',
-          '--no-sandbox'
-        ]
-      }
+      browser: 'chromium'
     }
   },
-  include: {},
+  include: {
+    I: './steps_file.js'
+  },
   bootstrap: null,
   mocha: {},
   name: 'test-challenge'
-};
+}
